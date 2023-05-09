@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://cbkucyea2i365"]
+
+[ext_resource type="AudioStream" uid="uid://dff38wgecnex7" path="res://Assets/Som/bgm.wav" id="1_ihqqb"]
+[ext_resource type="Script" path="res://Scripts/bgm.gd" id="2_o7fhp"]
+
+[node name="BGM" type="AudioStreamPlayer"]
+stream = ExtResource("1_ihqqb")
+autoplay = true
+bus = &"BGM"
+script = ExtResource("2_o7fhp")

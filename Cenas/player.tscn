@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://1c64demrcwab"]
+
+[ext_resource type="Script" path="res://Scripts/Player.gd" id="1_ebtae"]
+[ext_resource type="Texture2D" uid="uid://bgta8lc3rrhgr" path="res://Assets/Arte/characters_packed.png" id="2_5jfnx"]
+[ext_resource type="AudioStream" uid="uid://kgyb0dj38eli" path="res://Assets/Som/jump.wav" id="3_884au"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b4ftb"]
+size = Vector2(10, 16)
+
+[node name="Player" type="CharacterBody2D"]
+position = Vector2(146, 105)
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_ebtae")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_5jfnx")
+region_enabled = true
+region_rect = Rect2(0, 0, 24, 24)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_b4ftb")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+limit_bottom = 200
+position_smoothing_enabled = true
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[node name="Jump" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_884au")
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

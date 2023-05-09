@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3 uid="uid://bkxlxvhmrhg60"]
+
+[ext_resource type="Script" path="res://Scripts/Spike Enemy.gd" id="1_e0hw8"]
+[ext_resource type="Texture2D" uid="uid://bgta8lc3rrhgr" path="res://Assets/Arte/characters_packed.png" id="2_tgqit"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n7nm3"]
+size = Vector2(15, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t0f50"]
+size = Vector2(7, 6)
+
+[node name="Spike Enemy" type="CharacterBody2D"]
+collision_layer = 5
+collision_mask = 0
+script = ExtResource("1_e0hw8")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_tgqit")
+region_enabled = true
+region_rect = Rect2(168, 24, 24, 24)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, 5)
+shape = SubResource("RectangleShape2D_n7nm3")
+
+[node name="Right" type="RayCast2D" parent="."]
+position = Vector2(8, 0)
+target_position = Vector2(0, 20)
+
+[node name="Left" type="RayCast2D" parent="."]
+position = Vector2(-9, 0)
+target_position = Vector2(0, 20)
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(-0.5, -3)
+shape = SubResource("RectangleShape2D_t0f50")
+debug_color = Color(0.988235, 0, 0.282353, 0.419608)
+
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

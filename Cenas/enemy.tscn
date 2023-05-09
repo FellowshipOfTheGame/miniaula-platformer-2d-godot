@@ -1,0 +1,109 @@
+[gd_scene load_steps=8 format=3 uid="uid://dg61fp4jgxsjr"]
+
+[ext_resource type="Script" path="res://Enemy.gd" id="1_tf6k3"]
+[ext_resource type="Texture2D" uid="uid://bgta8lc3rrhgr" path="res://Assets/Arte/characters_packed.png" id="2_u53c4"]
+
+[sub_resource type="Curve2D" id="Curve2D_tj4ba"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -26.9829, -63.3938, 0, 0, 0, 0, 99.0171, -63.3938)
+}
+point_count = 2
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eqhxc"]
+size = Vector2(14, 14.6969)
+
+[sub_resource type="Animation" id="Animation_rms2l"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PathFollow2D:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PathFollow2D/Area2D/Sprite2D:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_he43o"]
+resource_name = "follow_path"
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PathFollow2D:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PathFollow2D/Area2D/Sprite2D:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1aww5"]
+_data = {
+"RESET": SubResource("Animation_rms2l"),
+"follow_path": SubResource("Animation_he43o")
+}
+
+[node name="Enemy" type="Path2D"]
+position = Vector2(26.9829, 62.3938)
+curve = SubResource("Curve2D_tj4ba")
+script = ExtResource("1_tf6k3")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="."]
+position = Vector2(-26.9829, -63.3938)
+
+[node name="Area2D" type="Area2D" parent="PathFollow2D"]
+collision_layer = 4
+collision_mask = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="PathFollow2D/Area2D"]
+position = Vector2(2.00012, -2.39379)
+texture = ExtResource("2_u53c4")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(120, 24, 24, 24)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PathFollow2D/Area2D"]
+position = Vector2(2.00003, -2.65155)
+shape = SubResource("RectangleShape2D_eqhxc")
+
+[node name="55494" type="Timer" parent="PathFollow2D"]
+wait_time = 0.2
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "follow_path"
+libraries = {
+"": SubResource("AnimationLibrary_1aww5")
+}
+
+[connection signal="body_entered" from="PathFollow2D/Area2D" to="." method="_on_area_2d_body_entered"]
